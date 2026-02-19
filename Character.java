@@ -10,7 +10,7 @@ public class Character extends Bullet {
     boolean isFocused;
     boolean isInvuln;
 
-    long invulnTimestamp;
+    int invulnStartFrame;
 
     static final double NORMALIZE = 1 / Math.sqrt(2);
 
@@ -23,14 +23,14 @@ public class Character extends Bullet {
         this.x = x;
         this.y = y;
         hitboxSize = w*0.2;
-        speed = 7;
+        normalSpeed = 7;
+        speed = normalSpeed;
         directionX = 0;
         directionY = 0;
         hp = 5;
         isFocused = false;
         isInvuln = false;
-
-        invulnTimestamp = 0;
+        invulnStartFrame = 0;
     }
 
     @Override
@@ -46,11 +46,10 @@ public class Character extends Bullet {
         }
     }
 
-    public void update(long currentTime) {
-        if (isInvuln && currentTime - invulnTimestamp > 2000) {
+    public void update(int frameNumber) {
+        if (isInvuln && frameNumber - invulnStartFrame > 120) {
             isInvuln = false;
             color = Color.RED;
-            invulnTimestamp = currentTime;
         }
         
         // Normalize speed
@@ -64,11 +63,14 @@ public class Character extends Bullet {
         y += currentSpeed * directionY;
     }
 
-    public void takeDamage() {
+    public void takeDamage(int frameNumber) {
         isInvuln = true;
         color = Color.BLUE;
+        invulnStartFrame = frameNumber;
     }
 
+    @Override
+    public void setSpeed(double spd) { speed = spd; }
     public void setDirectionX(int dir) { directionX = dir; }
     public void setDirectionY(int dir) { directionY = dir; }
     public void setIsFocused(boolean focus) { isFocused = focus; }

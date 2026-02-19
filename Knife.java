@@ -16,7 +16,8 @@ public class Knife extends Bullet {
         hitboxSize = h;
         turned = false;
 
-        setSpeed(5);
+        normalSpeed = 5;
+        setSpeed(normalSpeed);
     }
 
     public Knife(double x, double y, double angle, Color c) {
@@ -59,5 +60,5 @@ public class Knife extends Bullet {
 
 
     public boolean isTurned() { return turned; }
-    public void setTurned() { turned = false; }
+    public void setTurned() { turned = true; }
 }

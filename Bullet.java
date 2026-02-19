@@ -6,6 +6,7 @@ public abstract class Bullet {
     double x;
     double y;
     double angle;
+    double normalSpeed;
     double speedX;
     double speedY;
     boolean isAlive = true;
@@ -38,6 +39,7 @@ public abstract class Bullet {
         speedX = Math.cos(Math.toRadians(angle))*spd;
         speedY = Math.sin(Math.toRadians(angle))*spd;
     }
+    public void setSpeed() { setSpeed(normalSpeed); }
     public void setAngle(double theta) { angle = theta; }
     // Graphics Setters
     public void setColor(Color c) { color = c; }
