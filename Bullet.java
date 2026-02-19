@@ -42,11 +42,7 @@ public abstract class Bullet {
     // Graphics Setters
     public void setColor(Color c) { color = c; }
 
-    public void update() {
-        if (x > 800 || y > 900) {
-            isAlive = false;
-        }
-        
+    public void update() {      
         x += speedX;
         y += speedY;
     }

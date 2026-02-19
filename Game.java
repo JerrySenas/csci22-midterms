@@ -113,7 +113,8 @@ public class Game {
         for (int i=knives.size() - 1; i >= 0; i--) {
             Knife knife = knives.get(i);
             knife.update();
-            if (!knife.isAlive()) {
+
+            if (knife.getCenterX() > canvasWidth || knife.getCenterY() > canvasHeight) {
                 knives.remove(i);
                 continue;
             }
