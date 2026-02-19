@@ -21,7 +21,7 @@ public class Game {
 
     public void draw(Graphics2D g2d) {
         reimu.draw(g2d);
-        
+
         for (Knife knife : knives) {
             knife.draw(g2d);
         }
@@ -40,8 +40,9 @@ public class Game {
         if ( downPressed && (reimu.getCenterY() + reimu.getHeight()*0.5) < canvasHeight ) reimu.setDirectionY(1);
 
         reimu.setIsFocused(shiftPressed);
-        reimu.update();
+        reimu.update(currentTime);
 
+        // Test
         if (currentTime - timestamp > 5000) {
             for (int i = 0; i < 16; i++) {
                 knives.add(new Knife(100 + i*40, 200, 90, Color.BLUE));
@@ -107,11 +108,23 @@ public class Game {
 
     public void checkBullets() {
         // Destroys bullets outside of canvas
+        double reimuX = reimu.getCenterX();
+        double reimuY = reimu.getCenterY();
         for (int i=knives.size() - 1; i >= 0; i--) {
             Knife knife = knives.get(i);
             knife.update();
-            if (!knife.isAlive())
+            if (!knife.isAlive()) {
                 knives.remove(i);
+                continue;
+            }
+
+            if (
+                !reimu.isInvuln &&
+                Math.hypot(knife.getCenterX() - reimuX, knife.getCenterY() - reimuY) <= (knife.getHitboxSize() + reimu.getHitboxSize())*0.5
+            ) {
+                reimu.takeDamage();
+                knives.remove(i);
+            }
         }
 
         // 

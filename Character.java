@@ -8,6 +8,9 @@ public class Character extends Bullet {
     int directionX;
     int directionY;
     boolean isFocused;
+    boolean isInvuln;
+
+    long invulnTimestamp;
 
     static final double NORMALIZE = 1 / Math.sqrt(2);
 
@@ -15,31 +18,41 @@ public class Character extends Bullet {
         size = s;
         w = size;
         h = w*2;
+        color = Color.RED;
 
         this.x = x;
         this.y = y;
+        hitboxSize = w*0.2;
         speed = 7;
         directionX = 0;
         directionY = 0;
         hp = 5;
         isFocused = false;
+        isInvuln = false;
+
+        invulnTimestamp = 0;
     }
 
     @Override
     public void draw(Graphics2D g2d) {
         Rectangle2D.Double temp = new Rectangle2D.Double(x, y, w, h);
-        g2d.setColor(Color.RED);
+        g2d.setColor(color);
         g2d.fill(temp);
 
         if (isFocused) {
-            Ellipse2D.Double hitbox = new Ellipse2D.Double(getCenterX() - w*0.1, getCenterY() - w*0.1, w*0.2, w*0.2);
+            Ellipse2D.Double hitbox = new Ellipse2D.Double(getCenterX() - hitboxSize*0.5, getCenterY() - hitboxSize*0.5, hitboxSize, hitboxSize);
             g2d.setColor(Color.BLUE);
             g2d.fill(hitbox);
         }
     }
 
-    @Override
-    public void update() {
+    public void update(long currentTime) {
+        if (isInvuln && currentTime - invulnTimestamp > 2000) {
+            isInvuln = false;
+            color = Color.RED;
+            invulnTimestamp = currentTime;
+        }
+        
         // Normalize speed
         double currentSpeed = speed;
         if (isFocused) { currentSpeed /= 2; }
@@ -49,6 +62,11 @@ public class Character extends Bullet {
 
         x += currentSpeed * directionX;
         y += currentSpeed * directionY;
+    }
+
+    public void takeDamage() {
+        isInvuln = true;
+        color = Color.BLUE;
     }
 
     public void setDirectionX(int dir) { directionX = dir; }

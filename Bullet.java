@@ -9,6 +9,7 @@ public abstract class Bullet {
     double speedX;
     double speedY;
     boolean isAlive = true;
+    double hitboxSize;
 
     // graphics
     double size;
@@ -28,6 +29,7 @@ public abstract class Bullet {
     public double getHeight() { return h; }
     public double getCenterX() { return x + w*0.5; }
     public double getCenterY() { return y + h*0.5; }
+    public double getHitboxSize() { return hitboxSize; }
     public double getAngle() { return angle; }
     public boolean isAlive() { return isAlive; }
 

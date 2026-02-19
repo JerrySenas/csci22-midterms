@@ -13,6 +13,7 @@ public class Knife extends Bullet {
         this.x = x;
         this.y = y;
         this.angle = angle;
+        hitboxSize = h;
         turned = false;
 
         setSpeed(5);
@@ -49,6 +50,9 @@ public class Knife extends Bullet {
         g.draw(blade);
         g.setColor(Color.WHITE);
         g.fill(blade);
+
+        // Show hitbox
+        // g.fill(new Ellipse2D.Double(getCenterX() - hitboxSize*0.5, getCenterY() - hitboxSize*0.5, hitboxSize, hitboxSize));
 
         g.setTransform(baseTransform);
     }
