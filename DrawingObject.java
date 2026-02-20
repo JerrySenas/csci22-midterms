@@ -1,5 +1,5 @@
 /**
-_______
+This is an abstract class for all drawn objects.
 @author Jerry Senas (255351) and Angelico Soriano (255468)
 @version February __, 2026
 I have not discussed the Java language code in my program
@@ -26,6 +26,9 @@ public abstract class DrawingObject {
 
     public abstract void draw(Graphics2D g2d);
 
+    public void moveX(double amount) { x += amount; }
+    public void moveY(double amount) { y += amount; }
+
     public double getX() { return x; }
     public double getY() { return y; }
     public double getCenterX() { return x + w*0.5; }
@@ -35,5 +38,9 @@ public abstract class DrawingObject {
     public double getSize() { return size; }
 
     public void setColor(Color c) { color = c; }
-    public void setSize(double s) { size = s; }
+    public void setSize(double s) {
+        x -= (s - size)*0.5;
+        y -= (s - size)*0.5;
+        size = s;
+    }
 }

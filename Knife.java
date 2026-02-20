@@ -1,5 +1,5 @@
 /**
-_______
+This class draws and sets the size of the knifes that will be thrown.
 @author Jerry Senas (255351) and Angelico Soriano (255468)
 @version February __, 2026
 I have not discussed the Java language code in my program
@@ -35,9 +35,7 @@ public class Knife extends Bullet {
         setSpeed(normalSpeed);
     }
 
-    public Knife(double x, double y, double angle, Color c) {
-        this(15, x, y, angle, c);
-    }
+    public Knife(double x, double y, double angle, Color c) { this(15, x, y, angle, c); }
 
     @Override
     public void draw(Graphics2D g) {

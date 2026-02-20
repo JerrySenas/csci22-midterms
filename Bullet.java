@@ -1,5 +1,5 @@
 /**
-_______
+This class handles the bullets being shot by the moveable character.
 @author Jerry Senas (255351) and Angelico Soriano (255468)
 @version February __, 2026
 I have not discussed the Java language code in my program

@@ -1,5 +1,5 @@
 /**
-_______
+This class includes the background of the program and will be the place where the objects will be drawn.
 @author Jerry Senas (255351) and Angelico Soriano (255468)
 @version February __, 2026
 I have not discussed the Java language code in my program
@@ -15,7 +15,6 @@ of my program.
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.*;
 import java.util.ArrayList;
 import javax.swing.*;
 
@@ -25,7 +24,7 @@ public class SceneCanvas extends JComponent {
 
     Game game;
     Timer animTimer;
-    Rectangle2D.Double bg;
+    
 
     public SceneCanvas(int w, int h) {
         width = w;
@@ -33,8 +32,6 @@ public class SceneCanvas extends JComponent {
 
         game = new Game(width, height);
         setupControls();
-
-        bg = new Rectangle2D.Double(0, 0, width, height);
 
         animTimer = new Timer(16, new ActionListener() {
             @Override
@@ -50,10 +47,6 @@ public class SceneCanvas extends JComponent {
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        g2d.setColor(Color.GRAY);
-        g2d.fill(bg);
-
         game.draw(g2d);
     }
 

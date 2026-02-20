@@ -1,5 +1,5 @@
 /**
-_______
+This class contains the game logic of the program. This includes player movement, knife speed and rotation, etc.
 @author Jerry Senas (255351) and Angelico Soriano (255468)
 @version February __, 2026
 I have not discussed the Java language code in my program
@@ -19,6 +19,9 @@ import java.util.ArrayList;
 
 public class Game {
     int canvasWidth, canvasHeight;
+    Square bg;
+    Circle aura;
+    int auraSize;
     int frameNumber;
 
     double bossX;
@@ -34,10 +37,13 @@ public class Game {
     public Game(int w, int h) {
         canvasWidth = w;
         canvasHeight = h;
+        bg = new Square(0, 0, canvasWidth, Color.decode("#801700"));
 
         bossX = canvasWidth / 2;
         bossY = canvasHeight / 4;
         spellcardRadius = 200;
+
+        aura = new Circle(bossX - 50, bossY - 50, 100, new Color(255, 255, 255, 0), 0);
 
         frameNumber = 0;
         reimu = new Character(25, 400, 200);
@@ -45,6 +51,8 @@ public class Game {
     }
 
     public void draw(Graphics2D g2d) {
+        bg.draw(g2d);
+        aura.draw(g2d);
         reimu.draw(g2d);
 
         for (Knife knife : knives) {
@@ -159,8 +167,19 @@ public class Game {
     public void runSpellcard(int elapsedFrames) {
         if (elapsedFrames < 300) {
             // Wait 5 secs
+            if (elapsedFrames == 274) {
+                aura.setOpacity(0);
+                aura.setColor(new Color(255, 255, 255));
+                aura.setSize(1350);
+            } else if (elapsedFrames > 274) {
+                aura.addSize(-50);
+                aura.addOpacity(5);
+            }
         } else if (elapsedFrames < 360) {
             // Send 4 waves of 14 knives every 6 frames (0.1 s)
+            if (elapsedFrames == 300) {
+                aura.setOpacity(0);
+            }
             if (elapsedFrames < 319 && elapsedFrames % 6 == 0) {
                 for (int i = 0; i < 15; i++) {
                     knives.add(new Knife(bossX, bossY, i*25, Color.RED));
@@ -169,6 +188,9 @@ public class Game {
         } else if (elapsedFrames < 480) {
             // Stop time for 120 frames (2 s)
             if (elapsedFrames == 360) {
+                aura.setOpacity(100);
+                aura.setColor(new Color(255, 255, 255));
+                bg.setColor(Color.decode("#370603"));
                 for (Knife knife : knives) {
                     knife.setSpeed(0);
                 }
@@ -176,6 +198,9 @@ public class Game {
             }
             if (elapsedFrames < 385) {
                 // Spawn 4 waves of knives every 6 frames (0.1 s)
+                aura.addSize(50);
+                aura.addOpacity(-5);
+
                 if (elapsedFrames % 6 == 0) {
                     double angle = getBossAngle() - 90;
                     
@@ -211,9 +236,7 @@ public class Game {
                     }
                     spellcardRadius += 40;
                 }
-            }
-
-            else if (elapsedFrames < 425) {
+            } else if (elapsedFrames < 425) {
                 // Randomly rotate knives
                 if (elapsedFrames % 6 == 0) {              
                     for (Knife knife : knives) {
@@ -221,17 +244,27 @@ public class Game {
                             continue;
                         }
 
-                        if (Math.random() < 0.2) {
+                        if (Math.random() < 0.25) {
                             knife.setAngle(Math.random()*360);
                             knife.setColor(Color.green);
                             knife.setTurned();
                         }
                     }
                 }
+            } else if (elapsedFrames >= 454) {
+                if (elapsedFrames == 454) {
+                    aura.setOpacity(100);
+                    aura.setSize(100);
+                } else {
+                    aura.addSize(50);
+                    aura.addOpacity(-5);
+                }
             }
         }
         
         else {
+            bg.setColor(Color.decode("#801700"));
+            aura.setOpacity(0);
             for (Knife knife : knives) {
                 knife.setSpeed();
             }
