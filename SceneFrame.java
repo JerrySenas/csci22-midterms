@@ -26,8 +26,8 @@ public class SceneFrame {
         frame = new JFrame();
         canvas = new SceneCanvas(800, 600);
         canvas.setPreferredSize(new Dimension(800, 600));
-        width = 1600;
-        height = 900;
+        width = 800;
+        height = 600;
     }
 
     public void setupGUI() {

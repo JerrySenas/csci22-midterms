@@ -25,8 +25,8 @@ public class Knife extends Bullet {
         w = size*2.5;
         h = size;
 
-        this.x = x;
-        this.y = y;
+        this.x = x - w*0.5;
+        this.y = y - h*0.5;
         this.angle = angle;
         hitboxSize = h;
         turned = false;

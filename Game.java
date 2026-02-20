@@ -24,12 +24,11 @@ public class Game {
     int auraSize;
     int frameNumber;
 
-    double bossX;
-    double bossY;
     double spellcardRadius;
 
     ArrayList<Knife> knives;
     Character reimu;
+    Boss sakuya;
     boolean leftPressed, upPressed, rightPressed, downPressed, shiftPressed;
     
     int spellcardStartFrame;
@@ -39,12 +38,11 @@ public class Game {
         canvasHeight = h;
         bg = new Square(0, 0, canvasWidth, Color.decode("#801700"));
 
-        bossX = canvasWidth / 2;
-        bossY = canvasHeight / 4;
+        sakuya = new Boss(canvasWidth / 2, canvasHeight / 4, 25);
+        aura = new Circle(sakuya.getCenterX(), sakuya.getCenterY(), 100, new Color(255, 255, 255, 0));
         spellcardRadius = 200;
 
-        aura = new Circle(bossX - 50, bossY - 50, 100, new Color(255, 255, 255, 0), 0);
-
+        
         frameNumber = 0;
         reimu = new Character(25, 400, 200);
         knives = new ArrayList<>();
@@ -54,11 +52,11 @@ public class Game {
         bg.draw(g2d);
         aura.draw(g2d);
         reimu.draw(g2d);
-
+        sakuya.draw(g2d);
+        
         for (Knife knife : knives) {
             knife.draw(g2d);
         }
-
     }
 
     public void update() {
@@ -75,8 +73,14 @@ public class Game {
 
         reimu.setIsFocused(shiftPressed);
         reimu.update(frameNumber);
+        sakuya.update();
 
-        runSpellcard(frameNumber - spellcardStartFrame);
+        if (frameNumber < 1800) {
+            runSpellcard(frameNumber - spellcardStartFrame);
+        } else {
+            System.out.println(reimu.getHitCount());
+            frameNumber = 0;
+        }
     }
 
     public void handlePress(int keyCode) {
@@ -165,8 +169,9 @@ public class Game {
     }
 
     public void runSpellcard(int elapsedFrames) {
+        // 5 s between cycle
         if (elapsedFrames < 300) {
-            // Wait 5 secs
+            // Config aura
             if (elapsedFrames == 274) {
                 aura.setOpacity(0);
                 aura.setColor(new Color(255, 255, 255));
@@ -182,7 +187,7 @@ public class Game {
             }
             if (elapsedFrames < 319 && elapsedFrames % 6 == 0) {
                 for (int i = 0; i < 15; i++) {
-                    knives.add(new Knife(bossX, bossY, i*25, Color.RED));
+                    knives.add(new Knife(sakuya.getCenterX(), sakuya.getCenterY(), i*25, Color.RED));
                 }
             }
         } else if (elapsedFrames < 480) {
@@ -195,8 +200,13 @@ public class Game {
                     knife.setSpeed(0);
                 }
                 reimu.setSpeed(0);
+                sakuya.setDest(
+                    canvasWidth*0.25 + Math.random()*canvasWidth*0.5,
+                    canvasHeight*0.125 + Math.random()*canvasHeight*0.25,
+                    40
+                );
             }
-            if (elapsedFrames < 385) {
+            if (elapsedFrames < 384) {
                 // Spawn 4 waves of knives every 6 frames (0.1 s)
                 aura.addSize(50);
                 aura.addOpacity(-5);
@@ -236,7 +246,7 @@ public class Game {
                     }
                     spellcardRadius += 40;
                 }
-            } else if (elapsedFrames < 425) {
+            } else if (elapsedFrames < 437 && elapsedFrames > 400) {
                 // Randomly rotate knives
                 if (elapsedFrames % 6 == 0) {              
                     for (Knife knife : knives) {
@@ -253,6 +263,8 @@ public class Game {
                 }
             } else if (elapsedFrames >= 454) {
                 if (elapsedFrames == 454) {
+                    aura.setX(sakuya.getCenterX() - aura.getSize()*0.5);
+                    aura.setY(sakuya.getCenterY() - aura.getSize()*0.5);
                     aura.setOpacity(100);
                     aura.setSize(100);
                 } else {
@@ -277,12 +289,9 @@ public class Game {
     public ArrayList<Knife> getKnives() { return knives; }
     public Character getReimu() { return reimu; }
 
-    public double getBossDistance() {
-        return Math.hypot(bossX - reimu.getCenterX(), bossY - reimu.getCenterY());
-    }
     public double getBossAngle() {
-        double diffX = bossX - reimu.getCenterX();
-        double diffY = bossY - reimu.getCenterY();
+        double diffX = sakuya.getCenterX() - reimu.getCenterX();
+        double diffY = sakuya.getCenterY() - reimu.getCenterY();
         return Math.toDegrees(Math.atan2(diffY, diffX));
     }
 }

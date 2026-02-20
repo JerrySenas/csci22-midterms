@@ -17,7 +17,7 @@ import java.awt.*;
 import java.awt.geom.*;
 
 public class Character extends Bullet {
-    int hp;
+    int hitCount;
     double speed;
     int directionX;
     int directionY;
@@ -25,6 +25,7 @@ public class Character extends Bullet {
     boolean isInvuln;
 
     int invulnStartFrame;
+    int currFrame;
 
     static final double NORMALIZE = 1 / Math.sqrt(2);
 
@@ -41,27 +42,45 @@ public class Character extends Bullet {
         speed = normalSpeed;
         directionX = 0;
         directionY = 0;
-        hp = 5;
+        hitCount = 0;
+
         isFocused = false;
         isInvuln = false;
         invulnStartFrame = 0;
+        currFrame = 0;
     }
 
     @Override
     public void draw(Graphics2D g2d) {
-        Rectangle2D.Double temp = new Rectangle2D.Double(x, y, w, h);
+        if (isInvuln && currFrame % 12 >= 6) {
+            return;
+        }
+        Rectangle2D.Double hair = new Rectangle2D.Double(x + w*0.3, y, w*0.4, h*0.45);
+
+        Rectangle2D.Double bow = new Rectangle2D.Double(x + w*0.25, y, w*0.5, h*0.167);
+
+        Rectangle2D.Double torso = new Rectangle2D.Double(x + w*0.125, y + h*0.35, w*0.75, h*0.25);
+
+        Triangle skirt = new Triangle(x, y + h*0.3, w, h*0.5, color);
+        skirt.draw(g2d);
+        
+        g2d.setColor(Color.WHITE);
+        g2d.fill(torso);
+        g2d.setColor(Color.BLACK);
+        g2d.fill(hair);
         g2d.setColor(color);
-        g2d.fill(temp);
+        g2d.fill(bow);
 
         if (isFocused) {
             Ellipse2D.Double hitbox = new Ellipse2D.Double(getCenterX() - hitboxSize*0.5, getCenterY() - hitboxSize*0.5, hitboxSize, hitboxSize);
-            g2d.setColor(Color.BLUE);
+            g2d.setColor(color);
             g2d.fill(hitbox);
         }
     }
 
     public void update(int frameNumber) {
-        if (isInvuln && frameNumber - invulnStartFrame > 120) {
+        currFrame = frameNumber;
+        if (isInvuln && currFrame - invulnStartFrame > 120) {
             isInvuln = false;
             color = Color.RED;
         }
@@ -79,9 +98,11 @@ public class Character extends Bullet {
 
     public void takeDamage(int frameNumber) {
         isInvuln = true;
-        color = Color.BLUE;
         invulnStartFrame = frameNumber;
+        hitCount++;
     }
+
+    public int getHitCount() { return hitCount; }
 
     @Override
     public void setSpeed(double spd) { speed = spd; }
