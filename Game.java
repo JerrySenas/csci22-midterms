@@ -23,8 +23,11 @@ public class Game {
     Circle aura;
     int auraSize;
     int frameNumber;
+    int spellcardTimer;
+    boolean timeStopped;
 
     double spellcardRadius;
+    Line spellcardTimerLine;
 
     ArrayList<Knife> knives;
     Character reimu;
@@ -40,6 +43,10 @@ public class Game {
 
         sakuya = new Boss(canvasWidth / 2, canvasHeight / 4, 25);
         aura = new Circle(sakuya.getCenterX(), sakuya.getCenterY(), 100, new Color(255, 255, 255, 0));
+
+        spellcardTimerLine = new Line(100, 25, 700, 25, 3, Color.YELLOW);
+        spellcardTimer = 0;
+        timeStopped = false;
         spellcardRadius = 200;
 
         
@@ -48,19 +55,18 @@ public class Game {
         knives = new ArrayList<>();
     }
 
-    public void draw(Graphics2D g2d) {
-        bg.draw(g2d);
-        aura.draw(g2d);
-        reimu.draw(g2d);
-        sakuya.draw(g2d);
-        
+    public void drawKnives(Graphics2D g2d) {
         for (Knife knife : knives) {
             knife.draw(g2d);
         }
     }
 
     public void update() {
-        frameNumber += 1;
+        frameNumber ++;
+        if (!timeStopped) {
+            spellcardTimer ++;
+        }
+
         checkBullets(frameNumber);
         
         // Eval Reimu direction
@@ -75,10 +81,13 @@ public class Game {
         reimu.update(frameNumber);
         sakuya.update();
 
-        if (frameNumber < 1800) {
-            runSpellcard(frameNumber - spellcardStartFrame);
+        runSpellcard(frameNumber - spellcardStartFrame);
+
+        if (spellcardTimer < 1800) {
+            spellcardTimerLine.setX2(100 + (600 - (spellcardTimer / 3)));
         } else {
             System.out.println(reimu.getHitCount());
+            spellcardTimer = 0;
             frameNumber = 0;
         }
     }
@@ -171,7 +180,7 @@ public class Game {
     public void runSpellcard(int elapsedFrames) {
         // 5 s between cycle
         if (elapsedFrames < 300) {
-            // Config aura
+            // First attack warning
             if (elapsedFrames == 274) {
                 aura.setOpacity(0);
                 aura.setColor(new Color(255, 255, 255));
@@ -193,6 +202,7 @@ public class Game {
         } else if (elapsedFrames < 480) {
             // Stop time for 120 frames (2 s)
             if (elapsedFrames == 360) {
+                timeStopped = true;
                 aura.setOpacity(100);
                 aura.setColor(new Color(255, 255, 255));
                 bg.setColor(Color.decode("#370603"));
@@ -275,6 +285,7 @@ public class Game {
         }
         
         else {
+            timeStopped = false;
             bg.setColor(Color.decode("#801700"));
             aura.setOpacity(0);
             for (Knife knife : knives) {
@@ -286,8 +297,11 @@ public class Game {
         }
     }
 
-    public ArrayList<Knife> getKnives() { return knives; }
-    public Character getReimu() { return reimu; }
+    public DrawingObject getBG() { return bg; }
+    public DrawingObject getAura() { return aura; }
+    public DrawingObject getTimer() { return spellcardTimerLine; }
+    public DrawingObject getReimu() { return reimu; }
+    public DrawingObject getSakuya() { return sakuya; }
 
     public double getBossAngle() {
         double diffX = sakuya.getCenterX() - reimu.getCenterX();

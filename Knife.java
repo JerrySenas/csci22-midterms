@@ -31,7 +31,7 @@ public class Knife extends Bullet {
         hitboxSize = h;
         turned = false;
 
-        normalSpeed = 5;
+        normalSpeed = 4;
         setSpeed(normalSpeed);
     }
 

@@ -25,6 +25,7 @@ public class SceneCanvas extends JComponent {
     Game game;
     Timer animTimer;
     
+    ArrayList<DrawingObject> sprites;
 
     public SceneCanvas(int w, int h) {
         width = w;
@@ -32,6 +33,14 @@ public class SceneCanvas extends JComponent {
 
         game = new Game(width, height);
         setupControls();
+
+        sprites = new ArrayList<>();
+            
+        sprites.add(game.getBG());
+        sprites.add(game.getTimer());
+        sprites.add(game.getAura());
+        sprites.add(game.getSakuya());
+        sprites.add(game.getReimu());
 
         animTimer = new Timer(16, new ActionListener() {
             @Override
@@ -47,7 +56,10 @@ public class SceneCanvas extends JComponent {
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        game.draw(g2d);
+        for (DrawingObject sprite : sprites) {
+            sprite.draw(g2d);
+        }
+        game.drawKnives(g2d);
     }
 
     public void setupControls() {
