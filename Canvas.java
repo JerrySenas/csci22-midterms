@@ -24,11 +24,10 @@ public class Canvas extends JComponent {
         animTimer = new Timer(16, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                game.update(System.currentTimeMillis());
+                game.update();
                 repaint();
             }
         });
-        game.setTime(System.currentTimeMillis());
         animTimer.start();
     }
 

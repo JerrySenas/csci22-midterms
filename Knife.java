@@ -13,9 +13,11 @@ public class Knife extends Bullet {
         this.x = x;
         this.y = y;
         this.angle = angle;
+        hitboxSize = h;
         turned = false;
 
-        setSpeed(5);
+        normalSpeed = 5;
+        setSpeed(normalSpeed);
     }
 
     public Knife(double x, double y, double angle, Color c) {
@@ -50,10 +52,13 @@ public class Knife extends Bullet {
         g.setColor(Color.WHITE);
         g.fill(blade);
 
+        // Show hitbox
+        // g.fill(new Ellipse2D.Double(getCenterX() - hitboxSize*0.5, getCenterY() - hitboxSize*0.5, hitboxSize, hitboxSize));
+
         g.setTransform(baseTransform);
     }
 
 
     public boolean isTurned() { return turned; }
-    public void setTurned() { turned = false; }
+    public void setTurned() { turned = true; }
 }

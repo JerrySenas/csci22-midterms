@@ -6,9 +6,11 @@ public abstract class Bullet {
     double x;
     double y;
     double angle;
+    double normalSpeed;
     double speedX;
     double speedY;
     boolean isAlive = true;
+    double hitboxSize;
 
     // graphics
     double size;
@@ -28,6 +30,7 @@ public abstract class Bullet {
     public double getHeight() { return h; }
     public double getCenterX() { return x + w*0.5; }
     public double getCenterY() { return y + h*0.5; }
+    public double getHitboxSize() { return hitboxSize; }
     public double getAngle() { return angle; }
     public boolean isAlive() { return isAlive; }
 
@@ -36,15 +39,12 @@ public abstract class Bullet {
         speedX = Math.cos(Math.toRadians(angle))*spd;
         speedY = Math.sin(Math.toRadians(angle))*spd;
     }
+    public void setSpeed() { setSpeed(normalSpeed); }
     public void setAngle(double theta) { angle = theta; }
     // Graphics Setters
     public void setColor(Color c) { color = c; }
 
-    public void update() {
-        if (x > 800 || y > 900) {
-            isAlive = false;
-        }
-        
+    public void update() {      
         x += speedX;
         y += speedY;
     }
