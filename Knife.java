@@ -1,7 +1,7 @@
 /**
 This class draws and sets the size of the knifes that will be thrown.
 @author Jerry Senas (255351) and Angelico Soriano (255468)
-@version February __, 2026
+@version February 22, 2026
 I have not discussed the Java language code in my program
 with anyone other than my instructor or the teaching assistants
 assigned to this course.

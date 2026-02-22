@@ -1,7 +1,7 @@
 /**
 This class includes the background of the program and will be the place where the objects will be drawn.
 @author Jerry Senas (255351) and Angelico Soriano (255468)
-@version February __, 2026
+@version February 22, 2026
 I have not discussed the Java language code in my program
 with anyone other than my instructor or the teaching assistants
 assigned to this course.
@@ -54,6 +54,7 @@ public class SceneCanvas extends JComponent {
 
     @Override
     public void paintComponent(Graphics g) {
+        
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         for (DrawingObject sprite : sprites) {

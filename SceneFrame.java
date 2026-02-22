@@ -1,7 +1,7 @@
 /**
 This class contains the GUI for the program.
 @author Jerry Senas (255351) and Angelico Soriano (255468)
-@version February __, 2026
+@version February 22, 2026
 I have not discussed the Java language code in my program
 with anyone other than my instructor or the teaching assistants
 assigned to this course.
@@ -22,12 +22,17 @@ public class SceneFrame {
     int width;
     int height;
 
+    JPanel titlePanel;
+    JLabel title;
+    Font font = new Font("Times New Roman", Font.BOLD, 30);
+
     public SceneFrame() {
         frame = new JFrame();
         canvas = new SceneCanvas(800, 600);
         canvas.setPreferredSize(new Dimension(800, 600));
         width = 800;
         height = 600;
+        frame.getContentPane().setBackground(Color.BLACK);
     }
 
     public void setupGUI() {
@@ -38,5 +43,14 @@ public class SceneFrame {
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+
+        titlePanel = new JPanel();
+        titlePanel.setBackground(Color.BLACK);
+        title = new JLabel ("Sakuya Izayoi vs. Hakurei Reimu");
+        title.setForeground(Color.WHITE);
+        title.setFont(font);
+
+        titlePanel.add(title);
+        cp.add(titlePanel);
     }
 }

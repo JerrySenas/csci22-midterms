@@ -1,7 +1,7 @@
 /**
 This class contains the game logic of the program. This includes player movement, knife speed and rotation, etc.
 @author Jerry Senas (255351) and Angelico Soriano (255468)
-@version February __, 2026
+@version February 22, 2026
 I have not discussed the Java language code in my program
 with anyone other than my instructor or the teaching assistants
 assigned to this course.
@@ -21,7 +21,6 @@ public class Game {
     int canvasWidth, canvasHeight;
     Square bg;
     Circle aura;
-    int auraSize;
     int frameNumber;
     int spellcardTimer;
     boolean timeStopped;
@@ -35,20 +34,19 @@ public class Game {
     boolean leftPressed, upPressed, rightPressed, downPressed, shiftPressed;
     
     int spellcardStartFrame;
-
+    
     public Game(int w, int h) {
         canvasWidth = w;
         canvasHeight = h;
-        bg = new Square(0, 0, canvasWidth, Color.decode("#801700"));
+        bg = new Square(0, 0, canvasWidth, new Color(128, 23, 0, 0));
 
         sakuya = new Boss(canvasWidth / 2, canvasHeight / 4, 25);
         aura = new Circle(sakuya.getCenterX(), sakuya.getCenterY(), 100, new Color(255, 255, 255, 0));
 
-        spellcardTimerLine = new Line(100, 25, 700, 25, 3, Color.YELLOW);
+        spellcardTimerLine = new Line(100, 50, 700, 50, 3, Color.YELLOW);
         spellcardTimer = 0;
         timeStopped = false;
         spellcardRadius = 200;
-
         
         frameNumber = 0;
         reimu = new Character(25, 400, 200);
@@ -69,7 +67,7 @@ public class Game {
 
         checkBullets(frameNumber);
         
-        // Eval Reimu direction
+        // Evaluate Reimu's direction
         reimu.setDirectionX(0);
         reimu.setDirectionY(0);
         if ( leftPressed && (reimu.getCenterX() - reimu.getWidth()*0.5) > 0 ) reimu.setDirectionX(-1);
@@ -86,10 +84,12 @@ public class Game {
         if (spellcardTimer < 1800) {
             spellcardTimerLine.setX2(100 + (600 - (spellcardTimer / 3)));
         } else {
-            System.out.println(reimu.getHitCount());
-            spellcardTimer = 0;
-            frameNumber = 0;
+            
         }
+        
+        /**else if (reimu.getHitCount() == 3) {
+            
+        } */
     }
 
     public void handlePress(int keyCode) {
@@ -173,12 +173,10 @@ public class Game {
                 knives.remove(i);
             }
         }
-
-        // 
     }
 
     public void runSpellcard(int elapsedFrames) {
-        // 5 s between cycle
+        // 5 seconds between cycle
         if (elapsedFrames < 300) {
             // First attack warning
             if (elapsedFrames == 274) {
@@ -282,9 +280,7 @@ public class Game {
                     aura.addOpacity(-5);
                 }
             }
-        }
-        
-        else {
+        } else {
             timeStopped = false;
             bg.setColor(Color.decode("#801700"));
             aura.setOpacity(0);
