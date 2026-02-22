@@ -38,6 +38,13 @@ public class Game {
     boolean isPaused;
     String pauseMsg;
     
+    /**
+     * Constructs a new Game instance.
+     *
+     * @param w width of the game canvas
+     * @param h height of the game canvas
+     */
+
     public Game(int w, int h) {
         canvasWidth = w;
         canvasHeight = h;
@@ -58,6 +65,21 @@ public class Game {
         reimu = new Character(25, 400, 200);
         knives = new ArrayList<>();
     }
+
+    /**
+     * Updates the game state for a single frame.
+     *
+     * This includes:
+     * 
+     *   Advancing the frame counter
+     *   Updating the spellcard timer
+     *   Processing player input and movement
+     *   Updating boss and projectile logic
+     *   Checking collisions
+     *   Handling spellcard completion
+     * 
+     * If the game is paused, this method exits early without updating state.
+     */
 
     public void update() {
         frameNumber ++;
@@ -99,6 +121,11 @@ public class Game {
         }
     }
 
+    /**
+     * Detects which key was pressed.
+     *  @param keyCode The keycode of the pressed key.
+     */
+
     public void handlePress(int keyCode) {
         switch (keyCode) {
             case KeyEvent.VK_LEFT:
@@ -126,6 +153,10 @@ public class Game {
         }
     }
 
+    /**
+     * Detects which key was released.
+     *  @param keyCode The keycode of the released key.
+     */
     public void handleRelease(int keyCode) {
         switch (keyCode) {
             case KeyEvent.VK_LEFT:
@@ -154,6 +185,10 @@ public class Game {
 
     }
 
+    /**
+     * Handles collision and cleans up any bullets out of canvas.
+     *  @param frameNumber The current frame. Used by Reimu's invulnerability flickering.
+     */
     public void checkBullets(int frameNumber) {
         // Destroys bullets outside of canvas
         double reimuX = reimu.getCenterX();
@@ -189,6 +224,13 @@ public class Game {
         }
     }
 
+    /**
+     * Spawns knives, stops time, changes bg color and aura, and moves Sakuya to a random position.
+     * Sakuya's penultimate spellcard in Lunatic difficulty. This attack cycles.
+     * Timing is based on elapsedFrames
+     * 
+     *  @param elapsedFrames How many frames is has been since the end of the last cycle.
+     */
     public void runSpellcard(int elapsedFrames) {
         // 5 seconds between cycle
         if (elapsedFrames < 300) {
@@ -308,6 +350,9 @@ public class Game {
         }
     }
 
+    /**
+     * Unpauses the game and resets the game state to the starting position.
+     */
     public void unpause() {
         spellcardTimer = 0;
         timeStopped = false;
@@ -335,6 +380,10 @@ public class Game {
     public String getPauseMsg() { return pauseMsg; }
     public boolean isPaused() { return isPaused; }
 
+    /**
+     * Returns the angle between the horizontal and the line between Sakuya and Reimu's centers.
+     * Return value is in degrees, within the range -180 to 180, and relative to Reimu.
+     */
     public double getBossAngle() {
         double diffX = sakuya.getCenterX() - reimu.getCenterX();
         double diffY = sakuya.getCenterY() - reimu.getCenterY();
