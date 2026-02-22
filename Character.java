@@ -17,6 +17,9 @@ import java.awt.*;
 import java.awt.geom.*;
 
 public class Character extends Bullet {
+    double startX;
+    double startY;
+
     int hitCount;
     double speed;
     int directionX;
@@ -35,8 +38,11 @@ public class Character extends Bullet {
         h = w*2;
         color = Color.RED;
 
-        this.x = x;
-        this.y = y;
+        startX = x;
+        startY = y;
+        x = startX;
+        y = startY;
+
         hitboxSize = w*0.2;
         normalSpeed = 7;
         speed = normalSpeed;
@@ -57,7 +63,7 @@ public class Character extends Bullet {
         }
         Rectangle2D.Double hair = new Rectangle2D.Double(x + w*0.3, y, w*0.4, h*0.45);
 
-        Rectangle2D.Double bow = new Rectangle2D.Double(x + w*0.25, y, w*0.5, h*0.167);
+        Bow bow = new Bow(x + w*0.125, y, w*0.75, color);
 
         Rectangle2D.Double torso = new Rectangle2D.Double(x + w*0.125, y + h*0.35, w*0.75, h*0.25);
 
@@ -68,8 +74,7 @@ public class Character extends Bullet {
         g2d.fill(torso);
         g2d.setColor(Color.BLACK);
         g2d.fill(hair);
-        g2d.setColor(color);
-        g2d.fill(bow);
+        bow.draw(g2d);;
 
         if (isFocused) {
             Ellipse2D.Double hitbox = new Ellipse2D.Double(getCenterX() - hitboxSize*0.5, getCenterY() - hitboxSize*0.5, hitboxSize, hitboxSize);
@@ -100,6 +105,13 @@ public class Character extends Bullet {
         isInvuln = true;
         invulnStartFrame = frameNumber;
         hitCount++;
+    }
+
+    public void reset() {
+        x = startX;
+        y = startY;
+        isInvuln = false;
+        hitCount = 0;
     }
 
     public int getHitCount() { return hitCount; }

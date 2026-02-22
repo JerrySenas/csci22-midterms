@@ -60,7 +60,19 @@ public class SceneCanvas extends JComponent {
         for (DrawingObject sprite : sprites) {
             sprite.draw(g2d);
         }
-        game.drawKnives(g2d);
+        for (Knife knife : game.getKnives()) {
+            knife.draw(g2d);
+        }
+
+        if (game.isPaused()) {
+            // Make bg cover the game
+            sprites.get(0).draw(g2d);
+            g2d.setColor(Color.WHITE);
+            int lineY = 200;
+            for (String line : game.pauseMsg.split("\n")) {
+                g.drawString(line, 300, lineY += g.getFontMetrics().getHeight());
+            }
+        }
     }
 
     public void setupControls() {
@@ -73,6 +85,9 @@ public class SceneCanvas extends JComponent {
             @Override
             public void keyPressed(KeyEvent e) {
                 game.handlePress(e.getKeyCode());
+                if (game.isPaused() && game.getFrameNumber() > 300) {
+                    game.unpause();
+                }
             }
 
             @Override

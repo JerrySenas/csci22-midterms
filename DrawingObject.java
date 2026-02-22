@@ -37,6 +37,8 @@ public abstract class DrawingObject {
     public double getH() { return h; }
     public double getSize() { return size; }
 
+    public void setX(double x) { this.x = x; }
+    public void setY(double y) { this.y = y; }
     public void setColor(Color c) { color = c; }
     public void setSize(double s) {
         x -= (s - size)*0.5;

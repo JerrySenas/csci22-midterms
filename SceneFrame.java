@@ -32,7 +32,6 @@ public class SceneFrame {
         canvas.setPreferredSize(new Dimension(800, 600));
         width = 800;
         height = 600;
-        frame.getContentPane().setBackground(Color.BLACK);
     }
 
     public void setupGUI() {
@@ -40,17 +39,18 @@ public class SceneFrame {
         cp.add(canvas, BorderLayout.CENTER);
         frame.setSize(width, height);
         frame.setTitle("Midterm Project - Senas - Soriano");
+        
+        titlePanel = new JPanel();
+        titlePanel.setBackground(Color.BLACK);
+        title = new JLabel ("Sakuya Izayoi vs Reimu Hakurei");
+        title.setForeground(Color.WHITE);
+        title.setFont(font);
+        
+        titlePanel.add(title);
+        cp.add(titlePanel, BorderLayout.NORTH);
+        
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-
-        titlePanel = new JPanel();
-        titlePanel.setBackground(Color.BLACK);
-        title = new JLabel ("Sakuya Izayoi vs. Hakurei Reimu");
-        title.setForeground(Color.WHITE);
-        title.setFont(font);
-
-        titlePanel.add(title);
-        cp.add(titlePanel);
     }
 }

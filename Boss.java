@@ -17,14 +17,19 @@ import java.awt.*;
 import java.awt.geom.*;
 
 public class Boss extends Bullet {
+    double startX;
+    double startY;
+    
     double destX;
     double destY;
     boolean isMoving;
     int frames;
 
     public Boss(double x, double y, double s) {
-        this.x = x;
-        this.y = y;
+        startX = x;
+        startY = y;
+        x = startX;
+        y = startY;
         
         size = s;
         w = size;
@@ -82,5 +87,15 @@ public class Boss extends Bullet {
         frames = f;
         speedX = (destX - getCenterX()) / frames;
         speedY = (destY - getCenterY()) / frames;
+    }
+
+    public void reset() {
+        x = startX;
+        y = startY;
+        destX = 0;
+        destY = 0;
+        speedX = 0;
+        speedY = 0;
+        isMoving = false;
     }
 }
